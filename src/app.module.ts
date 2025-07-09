@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TenantModule } from './tenant/tenant.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -16,9 +18,12 @@ import { MongooseModule } from '@nestjs/mongoose';
       useFactory:(configservices:ConfigService)=>({
         uri: configservices.get<string>('MONGO_URI'),
       })
-    })
+    }),
+    TenantModule,
+    UserModule,
+    AuthModule,
+    TokenModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+
 })
 export class AppModule {}
