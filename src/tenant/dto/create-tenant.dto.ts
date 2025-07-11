@@ -24,7 +24,7 @@ export class CreateTenantDto{
     @ApiProperty({ example: 'my-unique-app-id',
     description: 'Unique identifier for the app/company', })
     @IsString()
-    appid:string;
+    appId:string;
 
     @ApiProperty({ example: 'Your Company Name',description: 'Readable company name', })
     @IsString()

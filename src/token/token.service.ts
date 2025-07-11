@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken'
 import * as fs from 'fs'
 import {v4 as uuidv4} from 'uuid'
@@ -56,5 +56,35 @@ export class TokenService {
         })
 
         return token
+    }
+
+    //verify accesstoken
+    async verifyAccessToken(token:string):Promise<any>{
+        try {
+            return jwt.verify(token,this.PUBLIC_KEY,{algorithms:['RS256']})
+        } catch (error) {
+            throw new UnauthorizedException('Invalid Access Token')
+        }
+    }
+
+    //verify refresh token
+    async verifyRefreshToken(token:string):Promise<any>{
+        let payload:any;
+        try {
+            payload = jwt.verify(token,this.PUBLIC_KEY,{algorithms:['RS256']})
+        } catch (error) {
+            throw new UnauthorizedException('Invalid Refresh Token')
+        }
+
+        const record = await this.refreshtokenmodel.findOne({jti:payload.jti})
+
+        if(!record || record.revoked)throw new UnauthorizedException('Refresh Token Revoked');
+
+        return payload;
+    }
+
+    //revoke refresh token
+    async revokeRefreshToken(jti:string):Promise<void>{
+        await this.refreshtokenmodel.updateOne({jti},{revoked:true});
     }
 }

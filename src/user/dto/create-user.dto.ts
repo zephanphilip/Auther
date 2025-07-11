@@ -7,7 +7,7 @@ export class CreateUserDto{
     email:string;
 
     @ApiProperty({example:'test-app',description:'Valid AppId'})
-    appid:string;
+    appId:string;
 
     @ApiProperty({
         example: 'Abcabc123!',

@@ -2,11 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe);
+  app.use(cookieParser());
 
   const config = new DocumentBuilder()
     .setTitle('Auther V1')
@@ -23,6 +25,7 @@ async function bootstrap() {
       All endpoints are protected and require proper authentication and authorization headers.`)
     .setVersion('1.0')
     .addBearerAuth() 
+    .addCookieAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

@@ -7,12 +7,18 @@ import { Strategy } from "passport-local";
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super({ usernameField: 'email' });
+    super({ usernameField: 'email',
+      passReqToCallback:true
+     });
   }
 
-  async validate(dto:LoginDto) {
+  async validate(req: any, email: string, password: string) {
+    const appId = req.body.appId;
+    if (!appId) {
+      throw new UnauthorizedException('Missing appId');
+    }
     // This calls AuthService.validateUser()
-    const user = await this.authService.validateUser(dto);
+    const user = await this.authService.validateUser(email,password,appId);
     if (!user) throw new UnauthorizedException();
     return user;
   }

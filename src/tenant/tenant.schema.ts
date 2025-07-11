@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 
-export type TenantDocument = Document & Tenant
+export type TenantDocument = Document & Tenant;
 
 
 @Schema({timestamps:true})
@@ -17,7 +17,7 @@ export class Tenant{
     password: string;
 
     @Prop({required:true})
-    appid: string;
+    appId: string;
 }
 
 export const TenantSchema = SchemaFactory.createForClass(Tenant);
