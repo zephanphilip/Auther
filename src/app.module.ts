@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import {JwksModule} from './.well-known/jwks.module'
+import { MfaModule } from './mfa/mfa.module';
 
 
 @Module({
@@ -25,7 +26,8 @@ import {JwksModule} from './.well-known/jwks.module'
     UserModule,
     AuthModule,
     TokenModule,
-    JwksModule
+    JwksModule,
+    MfaModule
   ],
 })
 export class AppModule {}

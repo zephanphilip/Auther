@@ -7,15 +7,18 @@ import { User, UserSchema } from 'src/user/users.schema';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './localstrategy';
 import { TokenModule } from 'src/token/token.module';
+import { JwtStrategy } from './jwt.strategy';
+import { MfaModule } from 'src/mfa/mfa.module';
 
 @Module({
   imports:[
     PassportModule,
     UserModule,
     TokenModule,
+    MfaModule,
     MongooseModule.forFeature([{name:User.name,schema:UserSchema}])
   ],
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy]
+  providers: [AuthService,LocalStrategy,JwtStrategy]
 })
 export class AuthModule {}
