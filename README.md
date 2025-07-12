@@ -65,7 +65,7 @@ MONGO\_URI=mongodb://localhost/auther
 4. **Run the app:**
 ```
 
-npm run start\:dev
+npm run start:dev
 
 ```
 
