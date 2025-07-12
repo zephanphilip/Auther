@@ -70,11 +70,8 @@ npm run start:dev
 ```
 
 5. **View Swagger docs:**
-```
-
 [http://localhost:3000/docs](http://localhost:3000/docs)
 
-```
 
 ---
 
