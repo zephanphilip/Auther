@@ -44,4 +44,23 @@ export class AuthService {
         const refreshToken = await this.tokenservices.createRefreshToken(user);
         return{accessToken, refreshToken}
     }
+
+    async validateGoogleUser(googleId:string,email:string,appId:string):Promise<UserDocument>{
+        const user = await this.usermodel.findOne({googleId,appId});
+
+        if(!user){
+            const user = await this.usermodel.findOne({email,appId});
+            if(!user){
+                const user = await this.usermodel.create({email,appId,googleId});
+                return user;
+            }
+            else{
+                user.googleId=googleId
+                return user;
+            }
+        }
+        else{
+            return user;
+        }
+    }
 }

@@ -9,6 +9,7 @@ import { LocalStrategy } from './localstrategy';
 import { TokenModule } from 'src/token/token.module';
 import { JwtStrategy } from './jwt.strategy';
 import { MfaModule } from 'src/mfa/mfa.module';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports:[
@@ -19,6 +20,6 @@ import { MfaModule } from 'src/mfa/mfa.module';
     MongooseModule.forFeature([{name:User.name,schema:UserSchema}])
   ],
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy,JwtStrategy]
+  providers: [AuthService,LocalStrategy,JwtStrategy,GoogleStrategy]
 })
 export class AuthModule {}

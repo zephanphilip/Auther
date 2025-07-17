@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login-dto.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -163,6 +163,54 @@ export class AuthController {
         }
     }
 
+    //google login
+    @ApiBody({
+    schema: {
+        type: 'object',
+        properties: {
+        appID: { type: 'string' },
+        },
+        required: ['appId'],
+    },
+    examples: {
+        example1: {
+        summary: 'Add appId',
+        value: {
+            appId: 'test-app',
+        },
+        },
+    },
+    })
+    @ApiOperation({ summary: 'Google Login',
+            description: 'Login using your google account',})
+    @UseGuards(AuthGuard('google'))
+    @Get('google/login')
+    googleLogin(@Req() req){}
+
+    @UseGuards(AuthGuard('google'))
+    @Get('google/callback')
+    async googleLoginCallback(@Req() req, @Res() res){
+        const user = req.user;
+
+        const payload = {
+            sub: user.userId,
+            appId: user.appId,
+            email: user.email,
+        };
+
+        const accessToken= await this.tokenservice.createAccessToken(payload)
+        const refreshToken = await this.tokenservice.createRefreshToken(user)
+        res.cookie('refreshToken',refreshToken,{
+            httpOnly:true,
+            secure:true,
+            sameSite:'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
+
+        return{
+            accessToken:accessToken
+        }
+    }
 
 
 }

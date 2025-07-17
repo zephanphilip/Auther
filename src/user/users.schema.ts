@@ -11,7 +11,7 @@ export class User{
     @Prop({required:true})
     email:string;
 
-    @Prop({required:true})
+    @Prop()
     password:string;
 
     @Prop({required:true,default:false})
@@ -19,6 +19,9 @@ export class User{
 
     @Prop()
     mfaSecret:string;
+
+    @Prop()
+    googleId:string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
